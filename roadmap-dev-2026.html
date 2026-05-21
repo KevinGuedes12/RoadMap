@@ -1,0 +1,2901 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap Dev 2026 — Frontend · Backend · Fullstack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --fe: #00d4aa;
+    --fe-dim: rgba(0,212,170,0.12);
+    --be: #ff6b35;
+    --be-dim: rgba(255,107,53,0.12);
+    --fs: #a855f7;
+    --fs-dim: rgba(168,85,247,0.12);
+    --yellow: #fbbf24;
+    --red: #ef4444;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-alt: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-head);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* ─── HEADER / HERO ─── */
+  .hero {
+    position: relative;
+    padding: 80px 40px 60px;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(168,85,247,0.18) 0%, rgba(0,212,170,0.08) 45%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 80px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span.fe { color: var(--fe); }
+  .hero h1 span.be { color: var(--be); }
+  .hero h1 span.fs { color: var(--fs); }
+
+  .hero-sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+
+  .hero-pills {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    border: 1px solid;
+  }
+  .pill.fe { border-color: var(--fe); color: var(--fe); background: var(--fe-dim); }
+  .pill.be { border-color: var(--be); color: var(--be); background: var(--be-dim); }
+  .pill.fs { border-color: var(--fs); color: var(--fs); background: var(--fs-dim); }
+
+  /* ─── NAV ─── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+
+  .nav-item {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 16px 20px;
+    cursor: pointer;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-item:hover { color: var(--text); }
+  .nav-item.fe:hover, .nav-item.fe.active { color: var(--fe); border-bottom-color: var(--fe); }
+  .nav-item.be:hover, .nav-item.be.active { color: var(--be); border-bottom-color: var(--be); }
+  .nav-item.fs:hover, .nav-item.fs.active { color: var(--fs); border-bottom-color: var(--fs); }
+
+  /* ─── LAYOUT ─── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* ─── TRACK SECTIONS ─── */
+  .track {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .track-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 60px;
+  }
+
+  .track-badge {
+    font-family: var(--font-alt);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-top: 6px;
+  }
+  .track-badge.fe { background: var(--fe-dim); color: var(--fe); border: 1px solid rgba(0,212,170,0.3); }
+  .track-badge.be { background: var(--be-dim); color: var(--be); border: 1px solid rgba(255,107,53,0.3); }
+  .track-badge.fs { background: var(--fs-dim); color: var(--fs); border: 1px solid rgba(168,85,247,0.3); }
+
+  .track-title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .track-title .accent.fe { color: var(--fe); }
+  .track-title .accent.be { color: var(--be); }
+  .track-title .accent.fs { color: var(--fs); }
+
+  .track-desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  /* ─── PHASE ─── */
+  .phase {
+    margin-bottom: 48px;
+  }
+
+  .phase-header {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .phase-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-alt);
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .fe .phase-num { background: var(--fe-dim); color: var(--fe); border: 1px solid rgba(0,212,170,0.3); }
+  .be .phase-num { background: var(--be-dim); color: var(--be); border: 1px solid rgba(255,107,53,0.3); }
+  .fs .phase-num { background: var(--fs-dim); color: var(--fs); border: 1px solid rgba(168,85,247,0.3); }
+
+  .phase-info {}
+
+  .phase-name {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .phase-meta {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .meta-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .meta-tag.lvl-basico { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); }
+  .meta-tag.lvl-intermediario { color: var(--yellow); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.08); }
+  .meta-tag.lvl-avancado { color: var(--red); border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.08); }
+
+  .phase-toggle {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .phase.open .phase-toggle { transform: rotate(45deg); }
+
+  .phase-body {
+    display: none;
+    padding-left: 56px;
+  }
+  .phase.open .phase-body { display: block; }
+
+  /* ─── MODULE ─── */
+  .module {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .module-head {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .module-icon {
+    font-size: 16px;
+    width: 28px;
+    text-align: center;
+  }
+
+  .module-title {
+    font-size: 14px;
+    font-weight: 700;
+    flex: 1;
+  }
+
+  .module-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .module-body {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .module-body { grid-template-columns: 1fr; }
+  }
+
+  .mod-section {}
+
+  .mod-section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mod-section-label::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .topic-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .topic-list li {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .topic-list li:hover { background: var(--surface2); color: var(--text); }
+  .topic-list li::before { content: '›'; color: var(--border); flex-shrink: 0; }
+
+  .why-box {
+    background: var(--surface2);
+    border-left: 2px solid var(--fe);
+    padding: 12px 14px;
+    border-radius: 0 6px 6px 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #a0a0c0;
+    line-height: 1.7;
+    margin-top: 12px;
+  }
+  .why-box.be-accent { border-left-color: var(--be); }
+  .why-box.fs-accent { border-left-color: var(--fs); }
+
+  .project-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    margin-top: 4px;
+  }
+
+  .project-card-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 6px;
+  }
+
+  .project-card-name {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .project-card-desc {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tool-chip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    transition: border-color 0.2s;
+  }
+  .tool-chip:hover { border-color: var(--muted); }
+
+  /* ─── SPECIAL CALLOUTS ─── */
+  .callout {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .callout::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+  }
+  .callout.info::before { background: var(--blue); }
+  .callout.warn::before { background: var(--yellow); }
+  .callout.tip::before { background: var(--green); }
+  .callout.important::before { background: var(--fs); }
+
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .callout.info .callout-label { color: var(--blue); }
+  .callout.warn .callout-label { color: var(--yellow); }
+  .callout.tip .callout-label { color: var(--green); }
+  .callout.important .callout-label { color: var(--fs); }
+
+  .callout p {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #a0a0c0;
+    line-height: 1.8;
+  }
+  .callout strong { color: var(--text); }
+
+  /* ─── DIVIDER ─── */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+    margin: 40px 0;
+  }
+
+  /* ─── FULL-WIDTH FULL-WIDTH MODULE ─── */
+  .module-body.full { grid-template-columns: 1fr; }
+
+  /* ─── AI MODULE SPECIAL ─── */
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .ai-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    transition: border-color 0.2s;
+  }
+  .ai-card:hover { border-color: var(--fs); }
+
+  .ai-card-icon { font-size: 20px; margin-bottom: 8px; }
+  .ai-card-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .ai-card-desc { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+  /* ─── TIMELINE CONNECTOR ─── */
+  .phase-timeline {
+    position: relative;
+    padding-left: 56px;
+  }
+  .phase-timeline::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--border), transparent);
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    padding: 60px 40px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto 40px;
+    text-align: left;
+  }
+  .footer-section-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .footer-link-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-link-list li {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #8080a0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-link-list li span { color: var(--muted); }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 20px;
+  }
+
+  /* ─── PRINT ─── */
+  @media print {
+    .sticky-nav { display: none; }
+    .phase-body { display: block !important; }
+    .phase-toggle { display: none; }
+    body { background: white; color: black; }
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero { padding: 60px 20px 40px; }
+    .container { padding: 0 20px; }
+    .track { padding: 60px 0; }
+    .sticky-nav { padding: 0 20px; }
+    .footer { padding: 40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Roadmap Dev 2026</div>
+  <h1>
+    <span class="fe">Frontend</span> ·
+    <span class="be">Backend</span> ·
+    <span class="fs">Fullstack</span>
+  </h1>
+  <p class="hero-sub">
+    Do absoluto zero ao profissional sênior.<br>
+    React · React Native · Node.js · TypeScript · Cloud · IA
+  </p>
+  <div class="hero-pills">
+    <span class="pill fe">🖥 Frontend Dev</span>
+    <span class="pill be">⚙️ Backend Dev</span>
+    <span class="pill fs">⚡ Fullstack Dev</span>
+  </div>
+</section>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <a class="nav-item" href="#intro">Intro</a>
+  <a class="nav-item fe" href="#frontend">Frontend</a>
+  <a class="nav-item be" href="#backend">Backend</a>
+  <a class="nav-item fs" href="#fullstack">Fullstack</a>
+  <a class="nav-item" href="#ferramentas">Ferramentas</a>
+  <a class="nav-item" href="#carreira">Carreira</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════ INTRO -->
+<section id="intro" class="track">
+<div class="container">
+
+  <div class="callout important">
+    <div class="callout-label">📌 Como usar este roadmap</div>
+    <p>
+      Este documento é um <strong>guia de rota</strong>, não uma lista de obrigações simultâneas.
+      Siga a ordem proposta. Pule uma fase só quando estiver <strong>confortável praticando</strong>,
+      não apenas depois de ler. Cada fase tem projetos reais — faça todos.
+      <br><br>
+      <strong>Tempo total estimado:</strong> Frontend ~12 meses · Backend ~14 meses · Fullstack ~20–24 meses (dedicação diária de 2–4h).
+    </p>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">⚠️ JavaScript antes de TypeScript</div>
+    <p>
+      TypeScript <strong>não substitui</strong> JavaScript. Ele é JavaScript com superpoderes de tipagem.
+      Para entender TS profundamente você <strong>precisa</strong> dominar os fundamentos de JS primeiro:
+      closures, protótipos, event loop, hoisting, escopo, assincronicidade.
+      O roadmap respeita essa ordem.
+    </p>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-label">💡 Princípio base</div>
+    <p>
+      <strong>Consistência > Intensidade.</strong> Estudar 2 horas todos os dias por 12 meses
+      é infinitamente mais eficaz que estudar 12 horas por 2 semanas e parar.
+      Projetos práticos valem mais que 10 cursos assistidos passivamente.
+    </p>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ FRONTEND TRACK -->
+<section id="frontend" class="track fe">
+<div class="container">
+
+  <div class="track-header">
+    <div>
+      <div class="track-badge fe">Trilha 01</div>
+      <h2 class="track-title">Frontend <span class="accent fe">Developer</span></h2>
+      <p class="track-desc">
+        HTML → CSS → JS → TS → React → Next.js → React Native · ~12 meses
+      </p>
+    </div>
+  </div>
+
+  <!-- ── FASE 1 ── -->
+  <div class="phase open fe" id="fe-1">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">01</div>
+      <div class="phase-info">
+        <div class="phase-name">Fundamentos da Web</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-basico">Básico</span>
+          <span class="meta-tag">⏱ 4–6 semanas</span>
+          <span class="meta-tag">Pré-req: nenhum</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="callout info">
+        <div class="callout-label">Por que começar aqui?</div>
+        <p>HTML e CSS são a fundação de tudo na web. Sem entender estrutura semântica e layout, você vai sofrer em qualquer framework depois.</p>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🏗</span>
+          <span class="module-title">HTML Semântico</span>
+          <span class="module-time">~2 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Tópicos</div>
+            <ul class="topic-list">
+              <li>Estrutura base: DOCTYPE, html, head, body</li>
+              <li>Tags semânticas: article, section, nav, aside, main, header, footer</li>
+              <li>Formulários completos: input, select, textarea, label</li>
+              <li>Tabelas e listas</li>
+              <li>Atributos de acessibilidade: alt, aria-label, role</li>
+              <li>Metatags e SEO básico: title, description, og tags</li>
+              <li>Links, âncoras e navegação</li>
+              <li>Multimedia: img, video, audio, figure</li>
+            </ul>
+            <div class="why-box">
+              HTML semântico melhora acessibilidade, SEO e manutenibilidade.
+              Leitores de tela e indexadores dependem da estrutura correta.
+            </div>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Projeto Prático</div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 01</div>
+              <div class="project-card-name">Página de Portfólio Estática</div>
+              <div class="project-card-desc">
+                Crie um portfólio pessoal com navegação, seção de projetos, formulário de contato e rodapé — usando apenas HTML semântico correto, sem CSS ainda.
+              </div>
+            </div>
+            <div class="tools-grid">
+              <span class="tool-chip">VS Code</span>
+              <span class="tool-chip">Live Server ext.</span>
+              <span class="tool-chip">MDN Docs</span>
+              <span class="tool-chip">W3Schools</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🎨</span>
+          <span class="module-title">CSS — do Básico ao Layout Avançado</span>
+          <span class="module-time">~3–4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Tópicos</div>
+            <ul class="topic-list">
+              <li>Box Model: margin, padding, border, content</li>
+              <li>Display: block, inline, inline-block, none</li>
+              <li>Flexbox completo: justify-content, align-items, flex-wrap, gap</li>
+              <li>CSS Grid: grid-template, grid-area, auto-fill, auto-fit</li>
+              <li>Responsividade e Media Queries</li>
+              <li>Mobile First: estratégia de design</li>
+              <li>Variáveis CSS (Custom Properties)</li>
+              <li>Pseudo-elementos e pseudo-classes</li>
+              <li>Transições e animações (@keyframes)</li>
+              <li>Position: relative, absolute, fixed, sticky</li>
+              <li>Z-index e stacking context</li>
+              <li>Seletores avançados</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Projetos Práticos</div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 02</div>
+              <div class="project-card-name">Clone de Landing Page</div>
+              <div class="project-card-desc">
+                Clone pixel-a-pixel uma landing page real (Stripe, Linear, Vercel).
+                Foco em responsividade e Grid/Flexbox.
+              </div>
+            </div>
+            <div class="project-card" style="margin-top: 8px">
+              <div class="project-card-label">🔨 Projeto 03</div>
+              <div class="project-card-name">Portfólio Estilizado</div>
+              <div class="project-card-desc">
+                Adicione CSS ao portfólio do projeto 01. Crie tema dark/light com variáveis CSS.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 2 ── -->
+  <div class="phase fe" id="fe-2">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">02</div>
+      <div class="phase-info">
+        <div class="phase-name">JavaScript — Fundamentos Sólidos</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-basico">Básico → Intermediário</span>
+          <span class="meta-tag">⏱ 6–8 semanas</span>
+          <span class="meta-tag">Pré-req: HTML + CSS</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="callout info">
+        <div class="callout-label">Por que JavaScript antes de qualquer framework?</div>
+        <p>React, Vue, Svelte — todos são JavaScript. Sem entender o JS puro, você vai <strong>decorar sintaxe</strong> em vez de <strong>entender o problema</strong>. Invista tempo aqui, colhe para sempre.</p>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">⚡</span>
+          <span class="module-title">JavaScript Core</span>
+          <span class="module-time">~4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Fundamentos da Linguagem</div>
+            <ul class="topic-list">
+              <li>Tipos primitivos e referências</li>
+              <li>var × let × const — escopo e hoisting</li>
+              <li>Funções: declaração, expressão, arrow functions</li>
+              <li>Closures e escopo léxico</li>
+              <li>Prototype e herança prototípica</li>
+              <li>Classes (ES6+)</li>
+              <li>Destructuring (array e objeto)</li>
+              <li>Spread e Rest operator</li>
+              <li>Template literals</li>
+              <li>Optional chaining e nullish coalescing</li>
+              <li>Módulos: import/export</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Arrays e Objetos</div>
+            <ul class="topic-list">
+              <li>map, filter, reduce, find, some, every</li>
+              <li>forEach × for...of × for...in</li>
+              <li>Manipulação de objetos: Object.keys, entries, values</li>
+              <li>Imutabilidade e cópia profunda</li>
+              <li>JSON.parse e JSON.stringify</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Assincronicidade</div>
+            <ul class="topic-list">
+              <li>Event Loop — como funciona de verdade</li>
+              <li>Call Stack, Web APIs, Callback Queue</li>
+              <li>Callbacks e callback hell</li>
+              <li>Promises: then, catch, finally</li>
+              <li>Promise.all, Promise.race, Promise.allSettled</li>
+              <li>Async/Await — sintaxe e tratamento de erro</li>
+              <li>Fetch API + consumo de APIs REST</li>
+              <li>Headers, body, status codes</li>
+              <li>Error handling profissional com try/catch</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">DOM e Eventos</div>
+            <ul class="topic-list">
+              <li>Seleção de elementos: querySelector, getElementById</li>
+              <li>Manipulação: innerText, innerHTML, classList</li>
+              <li>Criação e remoção de elementos</li>
+              <li>Event listeners: click, submit, input, keydown</li>
+              <li>Bubbling, capturing, stopPropagation</li>
+              <li>Event delegation</li>
+              <li>LocalStorage e SessionStorage</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding: 20px;">
+          <div class="mod-section-label">Projetos Práticos</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 8px;">
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 04</div>
+              <div class="project-card-name">To-do List</div>
+              <div class="project-card-desc">CRUD completo com LocalStorage, filtros por status, sem framework.</div>
+            </div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 05</div>
+              <div class="project-card-name">Buscador de Pokémon</div>
+              <div class="project-card-desc">Consumir PokeAPI com Fetch, exibir dados, tratar erros de rede.</div>
+            </div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 06</div>
+              <div class="project-card-name">Quiz Interativo</div>
+              <div class="project-card-desc">Timer, pontuação, embaralhar perguntas com array methods.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 3 ── -->
+  <div class="phase fe" id="fe-3">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">03</div>
+      <div class="phase-info">
+        <div class="phase-name">Git, GitHub e Trabalho em Equipe</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-basico">Básico</span>
+          <span class="meta-tag">⏱ 1–2 semanas</span>
+          <span class="meta-tag">Pré-req: JS básico</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🌿</span>
+          <span class="module-title">Git + GitHub — Fluxo Profissional</span>
+          <span class="module-time">~1–2 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Comandos Essenciais</div>
+            <ul class="topic-list">
+              <li>git init, clone, status, add, commit</li>
+              <li>git push, pull, fetch</li>
+              <li>Branches: checkout, switch, merge, rebase</li>
+              <li>Resolução de conflitos</li>
+              <li>git log, diff, stash</li>
+              <li>git reset e git revert (diferença!)</li>
+              <li>.gitignore bem configurado</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Fluxo de Equipe</div>
+            <ul class="topic-list">
+              <li>GitHub Flow (feature branches)</li>
+              <li>Pull Requests com descrição profissional</li>
+              <li>Code Review: como dar e receber</li>
+              <li>Issues e Project Boards</li>
+              <li>Conventional Commits (feat:, fix:, docs:)</li>
+              <li>Semantic Versioning (MAJOR.MINOR.PATCH)</li>
+              <li>GitHub Actions — intro básica</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">💡 Hábito essencial</div>
+        <p>Commit pequenos e frequentes > um commit gigante por feature. Use Conventional Commits desde o início — isso vai separar seus projetos dos iniciantes.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 4 ── -->
+  <div class="phase fe" id="fe-4">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">04</div>
+      <div class="phase-info">
+        <div class="phase-name">TypeScript — JS com Superpoderes</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-intermediario">Intermediário</span>
+          <span class="meta-tag">⏱ 3–4 semanas</span>
+          <span class="meta-tag">Pré-req: JS sólido</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="callout warn">
+        <div class="callout-label">⚠️ TypeScript não apaga JavaScript</div>
+        <p>TS <strong>compila para JS</strong>. Todo erro de TS é um erro de JS em potencial.
+        Você precisa entender o JS primeiro para que a tipagem faça sentido.
+        TypeScript não é um novo paradigma — é uma ferramenta de segurança em cima do JS.</p>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🔷</span>
+          <span class="module-title">TypeScript — Completo</span>
+          <span class="module-time">~3–4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Fundamentos</div>
+            <ul class="topic-list">
+              <li>Tipos primitivos: string, number, boolean, null, undefined</li>
+              <li>Arrays tipados e Tuples</li>
+              <li>type × interface — quando usar cada um</li>
+              <li>Union types e Intersection types</li>
+              <li>Type Aliases</li>
+              <li>Enums</li>
+              <li>Funções tipadas: parâmetros, retorno, void</li>
+              <li>any, unknown, never — diferenças críticas</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Avançado</div>
+            <ul class="topic-list">
+              <li>Generics: funções, interfaces e classes genéricas</li>
+              <li>Utility Types: Partial, Required, Readonly, Pick, Omit, Record</li>
+              <li>Conditional Types e Template Literal Types</li>
+              <li>Type Guards e Type Narrowing</li>
+              <li>Decorators (básico)</li>
+              <li>Tipagem de respostas de API</li>
+              <li>tsconfig.json — configuração profissional</li>
+              <li>Strict mode e suas implicações</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="project-card">
+            <div class="project-card-label">🔨 Projeto 07</div>
+            <div class="project-card-name">Migrar Projeto JS → TS</div>
+            <div class="project-card-desc">
+              Pegue um projeto anterior (To-do ou Quiz) e migre para TypeScript.
+              Tipar todas as funções, interfaces de dados, estados e retornos de API.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 5 ── -->
+  <div class="phase fe" id="fe-5">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">05</div>
+      <div class="phase-info">
+        <div class="phase-name">React — Fundamentos e Componentes</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-intermediario">Intermediário</span>
+          <span class="meta-tag">⏱ 5–6 semanas</span>
+          <span class="meta-tag">Pré-req: JS + TS</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">⚛️</span>
+          <span class="module-title">React Core</span>
+          <span class="module-time">~5–6 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Fundamentos</div>
+            <ul class="topic-list">
+              <li>JSX e Virtual DOM</li>
+              <li>Componentes funcionais</li>
+              <li>Props e prop drilling</li>
+              <li>useState — estado local</li>
+              <li>useEffect — side effects</li>
+              <li>useRef — referências</li>
+              <li>useContext — estado global simples</li>
+              <li>useMemo e useCallback — memoização</li>
+              <li>Custom Hooks — criação e reutilização</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Tópicos Avançados</div>
+            <ul class="topic-list">
+              <li>Renderização condicional e listas com key</li>
+              <li>Context API + useReducer (Redux-like)</li>
+              <li>React Router v6 — rotas, params, loaders</li>
+              <li>React Query / TanStack Query — server state</li>
+              <li>Formulários com React Hook Form + Zod</li>
+              <li>Autenticação JWT no frontend</li>
+              <li>Protected Routes</li>
+              <li>Componentização e composição</li>
+              <li>Error Boundaries</li>
+              <li>Suspense e lazy loading</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 08</div>
+              <div class="project-card-name">Dashboard Financeiro</div>
+              <div class="project-card-desc">Gráficos com Recharts, filtros, estado global com Context, consumo de API real.</div>
+            </div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 09</div>
+              <div class="project-card-name">E-commerce Básico</div>
+              <div class="project-card-desc">Catálogo, carrinho com useReducer, checkout com formulário validado (Zod), autenticação.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🎨</span>
+          <span class="module-title">Styling Moderno — TailwindCSS + shadcn/ui</span>
+          <span class="module-time">~1–2 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">TailwindCSS</div>
+            <ul class="topic-list">
+              <li>Utility-first philosophy</li>
+              <li>Responsividade com breakpoints: sm, md, lg, xl</li>
+              <li>Dark mode: class-based</li>
+              <li>Hover, focus, group states</li>
+              <li>Variáveis de design com CSS custom properties</li>
+              <li>@apply para classes customizadas</li>
+              <li>Tailwind config: temas, cores, fontes</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">shadcn/ui</div>
+            <ul class="topic-list">
+              <li>O que é shadcn/ui (não é biblioteca, é coleção de componentes)</li>
+              <li>Instalação e configuração</li>
+              <li>Button, Input, Dialog, Sheet, Card</li>
+              <li>Form components com React Hook Form</li>
+              <li>Customização de temas</li>
+              <li>Componentes Data Table</li>
+              <li>Construir Design System próprio</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 6 ── -->
+  <div class="phase fe" id="fe-6">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">06</div>
+      <div class="phase-info">
+        <div class="phase-name">Next.js — React em Produção</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 4–5 semanas</span>
+          <span class="meta-tag">Pré-req: React sólido</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="callout info">
+        <div class="callout-label">Por que Next.js?</div>
+        <p>Next.js é o React para produção. SEO, performance, roteamento baseado em arquivo, Server Components, API Routes — features que você precisaria construir do zero. É o padrão da indústria em 2026.</p>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">▲</span>
+          <span class="module-title">Next.js 15 — App Router Completo</span>
+          <span class="module-time">~4–5 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Fundamentos</div>
+            <ul class="topic-list">
+              <li>App Router vs Pages Router — diferenças</li>
+              <li>Roteamento baseado em arquivo</li>
+              <li>Server Components vs Client Components</li>
+              <li>Layouts, Templates, Loading, Error</li>
+              <li>Params e Search Params</li>
+              <li>Route Groups e Parallel Routes</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Renderização e Cache</div>
+            <ul class="topic-list">
+              <li>SSR — Server-Side Rendering</li>
+              <li>SSG — Static Site Generation</li>
+              <li>ISR — Incremental Static Regeneration</li>
+              <li>fetch com cache, revalidate, no-store</li>
+              <li>generateStaticParams</li>
+              <li>Streaming e Suspense</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Funcionalidades</div>
+            <ul class="topic-list">
+              <li>API Routes e Route Handlers</li>
+              <li>Server Actions — formulários sem API</li>
+              <li>Middleware — proteção de rotas</li>
+              <li>Autenticação com NextAuth.js / Clerk</li>
+              <li>Otimização de imagens (next/image)</li>
+              <li>Fontes otimizadas (next/font)</li>
+              <li>Metadata API para SEO</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Deploy</div>
+            <ul class="topic-list">
+              <li>Deploy na Vercel (zero config)</li>
+              <li>Environment variables — .env.local</li>
+              <li>Preview Deployments</li>
+              <li>Edge Runtime básico</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="project-card">
+            <div class="project-card-label">🔨 Projeto 10 — Portfólio Final</div>
+            <div class="project-card-name">SaaS de Gestão de Tarefas com Next.js</div>
+            <div class="project-card-desc">
+              App completo: autenticação (Clerk), banco de dados (PostgreSQL + Prisma), CRUD com Server Actions,
+              dashboard com gráficos, dark mode, responsivo, deploy na Vercel. Este é o projeto âncora do portfólio frontend.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 7 ── -->
+  <div class="phase fe" id="fe-7">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">07</div>
+      <div class="phase-info">
+        <div class="phase-name">React Native + Expo — Mobile</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 5–6 semanas</span>
+          <span class="meta-tag">Pré-req: React sólido</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">📱</span>
+          <span class="module-title">React Native com Expo</span>
+          <span class="module-time">~5–6 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Fundamentos Mobile</div>
+            <ul class="topic-list">
+              <li>Diferenças: RN vs Web</li>
+              <li>Expo Router (file-based routing)</li>
+              <li>Componentes nativos: View, Text, Image, ScrollView</li>
+              <li>StyleSheet — diferenças do CSS</li>
+              <li>Flexbox no mobile</li>
+              <li>AsyncStorage — persistência local</li>
+              <li>Safe Area e StatusBar</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">APIs Mobile</div>
+            <ul class="topic-list">
+              <li>Câmera (expo-camera)</li>
+              <li>Galeria (expo-image-picker)</li>
+              <li>Geolocalização (expo-location)</li>
+              <li>Notificações Push (expo-notifications)</li>
+              <li>Mapas (react-native-maps)</li>
+              <li>Biometria (expo-local-authentication)</li>
+              <li>Acelerômetro e sensores</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Build e Publicação</div>
+            <ul class="topic-list">
+              <li>EAS Build — build na nuvem</li>
+              <li>EAS Submit — publicar na Play Store</li>
+              <li>Over-the-air updates (EAS Update)</li>
+              <li>App signing e certificados</li>
+              <li>TestFlight e versões de teste</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Projeto</div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 11</div>
+              <div class="project-card-name">App de Sustentabilidade</div>
+              <div class="project-card-desc">
+                App com autenticação, câmera para registro de descarte, geolocalização, notificações e backend Node.js.
+                Publicar na Play Store.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 8 ── -->
+  <div class="phase fe" id="fe-8">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">08</div>
+      <div class="phase-info">
+        <div class="phase-name">React Avançado — Arquitetura e Performance</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 3–4 semanas</span>
+          <span class="meta-tag">Pré-req: React + Next.js</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🏛</span>
+          <span class="module-title">Arquitetura, Testes e Performance</span>
+          <span class="module-time">~3–4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Arquitetura</div>
+            <ul class="topic-list">
+              <li>Folder structure profissional</li>
+              <li>Feature-based architecture</li>
+              <li>Atomic Design (átomos, moléculas, organismos)</li>
+              <li>Gerenciamento de estado: Zustand, Jotai</li>
+              <li>Design Patterns: HOC, Render Props, Compound</li>
+              <li>Micro-frontends (conceito)</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Performance</div>
+            <ul class="topic-list">
+              <li>React DevTools Profiler</li>
+              <li>Evitar re-renders desnecessários</li>
+              <li>useMemo e useCallback corretos</li>
+              <li>Code splitting e lazy()</li>
+              <li>Bundle analysis (webpack-bundle-analyzer)</li>
+              <li>Core Web Vitals: LCP, FID, CLS</li>
+              <li>Lighthouse score</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Testes</div>
+            <ul class="topic-list">
+              <li>Jest — setup e configuração</li>
+              <li>React Testing Library — filosofia</li>
+              <li>Testes unitários de componentes</li>
+              <li>Testes de integração</li>
+              <li>Mocks e Spies</li>
+              <li>Cypress ou Playwright — E2E</li>
+              <li>TDD básico</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">UI/UX Profissional</div>
+            <ul class="topic-list">
+              <li>Figma — protótipos e design systems</li>
+              <li>Design Tokens</li>
+              <li>Acessibilidade (WCAG 2.1)</li>
+              <li>ARIA roles e landmarks</li>
+              <li>Testes com leitores de tela</li>
+              <li>Internacionalização (i18n)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ BACKEND TRACK -->
+<section id="backend" class="track be">
+<div class="container">
+
+  <div class="track-header">
+    <div>
+      <div class="track-badge be">Trilha 02</div>
+      <h2 class="track-title">Backend <span class="accent be">Developer</span></h2>
+      <p class="track-desc">
+        Lógica → Node.js → APIs REST → DB → Arquitetura → DevOps · ~14 meses
+      </p>
+    </div>
+  </div>
+
+  <!-- ── FASE 1 BE ── -->
+  <div class="phase be" id="be-1">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">01</div>
+      <div class="phase-info">
+        <div class="phase-name">Lógica de Programação e Algoritmos</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-basico">Básico</span>
+          <span class="meta-tag">⏱ 3–4 semanas</span>
+          <span class="meta-tag">Pré-req: nenhum</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🧠</span>
+          <span class="module-title">Lógica e Estruturas de Dados</span>
+          <span class="module-time">~3–4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Algoritmos</div>
+            <ul class="topic-list">
+              <li>Pensamento algorítmico e pseudocódigo</li>
+              <li>Condicionais, loops, recursividade</li>
+              <li>Busca linear e binária</li>
+              <li>Ordenação: bubble, selection, quick, merge sort</li>
+              <li>Dois ponteiros e janela deslizante</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Estruturas de Dados</div>
+            <ul class="topic-list">
+              <li>Array e String</li>
+              <li>Stack e Queue</li>
+              <li>Linked List</li>
+              <li>Hash Map / Hash Table</li>
+              <li>Árvores e Grafos (conceito)</li>
+              <li>Complexidade: Big O Notation</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="callout tip">
+            <div class="callout-label">💡 Prática recomendada</div>
+            <p>Resolver 2–3 problemas por dia no LeetCode (nível Easy) ou Beecrowd em JS/TS. Isso treina o raciocínio lógico que você vai precisar para arquitetar sistemas complexos.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 2 BE ── -->
+  <div class="phase be" id="be-2">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">02</div>
+      <div class="phase-info">
+        <div class="phase-name">Node.js — Por Dentro do Motor</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-basico">Básico → Intermediário</span>
+          <span class="meta-tag">⏱ 4–5 semanas</span>
+          <span class="meta-tag">Pré-req: JS sólido</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🟢</span>
+          <span class="module-title">Node.js Core</span>
+          <span class="module-time">~4–5 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Funcionamento Interno</div>
+            <ul class="topic-list">
+              <li>V8 Engine e como Node executa JS</li>
+              <li>Event Loop do Node — diferenças do browser</li>
+              <li>libuv e I/O não bloqueante</li>
+              <li>Single thread vs multi-threaded</li>
+              <li>Worker Threads para CPU-bound</li>
+              <li>Cluster para multi-core</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Módulos e APIs Nativas</div>
+            <ul class="topic-list">
+              <li>CommonJS vs ESModules</li>
+              <li>fs — leitura e escrita de arquivos</li>
+              <li>path — manipulação de caminhos</li>
+              <li>os — informações do sistema</li>
+              <li>crypto — hashing e criptografia</li>
+              <li>http/https — servidor sem framework</li>
+              <li>Streams — readable, writable, transform</li>
+              <li>Buffer e dados binários</li>
+              <li>process — env, argv, exit</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="project-card">
+            <div class="project-card-label">🔨 Projeto 01 BE</div>
+            <div class="project-card-name">Servidor HTTP do Zero</div>
+            <div class="project-card-desc">
+              Criar um servidor HTTP sem framework que leia arquivos, sirva JSON e faça roteamento manual.
+              Entender o fluxo antes de usar Express.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 3 BE ── -->
+  <div class="phase be" id="be-3">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">03</div>
+      <div class="phase-info">
+        <div class="phase-name">APIs REST — Express e Fastify</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-intermediario">Intermediário</span>
+          <span class="meta-tag">⏱ 5–6 semanas</span>
+          <span class="meta-tag">Pré-req: Node.js core</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🚀</span>
+          <span class="module-title">Express.js — O Clássico</span>
+          <span class="module-time">~3 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Conceitos REST</div>
+            <ul class="topic-list">
+              <li>Verbos HTTP: GET, POST, PUT, PATCH, DELETE</li>
+              <li>Status codes: 200, 201, 400, 401, 403, 404, 500</li>
+              <li>Headers e Content-Type</li>
+              <li>REST vs RESTful vs API — diferenças</li>
+              <li>JSON como padrão de comunicação</li>
+              <li>Idempotência</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Express</div>
+            <ul class="topic-list">
+              <li>Rotas: params, query string, body</li>
+              <li>Middlewares globais e por rota</li>
+              <li>Controllers e separação de responsabilidades</li>
+              <li>Error handling middleware</li>
+              <li>CORS configurado corretamente</li>
+              <li>express-validator ou Zod para validação</li>
+              <li>Rate limiting (express-rate-limit)</li>
+              <li>Helmet para headers de segurança</li>
+              <li>Morgan para logging</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">⚡</span>
+          <span class="module-title">Fastify — Performance Moderna</span>
+          <span class="module-time">~2 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Por que Fastify?</div>
+            <ul class="topic-list">
+              <li>2–3× mais rápido que Express</li>
+              <li>Schema validation nativo com JSON Schema</li>
+              <li>Plugin system (encapsulamento)</li>
+              <li>TypeScript first</li>
+              <li>Logging com Pino integrado</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Quando usar Express vs Fastify</div>
+            <div class="why-box be-accent">
+              <strong>Express:</strong> projetos legados, ecossistema maduro, aprendizado.<br>
+              <strong>Fastify:</strong> novos projetos, alta performance, TypeScript nativo, microserviços.
+            </div>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="project-card">
+            <div class="project-card-label">🔨 Projeto 02 BE</div>
+            <div class="project-card-name">API REST de Blog com Express</div>
+            <div class="project-card-desc">
+              CRUD completo de posts e comentários, autenticação JWT, validação, paginação,
+              documentação com Swagger/OpenAPI, testes com Insomnia.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 4 BE ── -->
+  <div class="phase be" id="be-4">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">04</div>
+      <div class="phase-info">
+        <div class="phase-name">Banco de Dados — SQL + PostgreSQL + Prisma</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-intermediario">Intermediário</span>
+          <span class="meta-tag">⏱ 5–6 semanas</span>
+          <span class="meta-tag">Pré-req: APIs REST</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🗄</span>
+          <span class="module-title">SQL e PostgreSQL</span>
+          <span class="module-time">~3 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Fundamentos SQL</div>
+            <ul class="topic-list">
+              <li>SELECT, INSERT, UPDATE, DELETE</li>
+              <li>WHERE, ORDER BY, GROUP BY, HAVING</li>
+              <li>JOINs: INNER, LEFT, RIGHT, FULL</li>
+              <li>Subqueries e CTEs (WITH)</li>
+              <li>Funções de agregação: COUNT, SUM, AVG, MIN, MAX</li>
+              <li>Transações: BEGIN, COMMIT, ROLLBACK</li>
+              <li>Índices e quando usar</li>
+              <li>EXPLAIN ANALYZE para otimização</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Modelagem</div>
+            <ul class="topic-list">
+              <li>Tipos de relacionamentos: 1:1, 1:N, N:N</li>
+              <li>Chaves primárias e estrangeiras</li>
+              <li>Normalização: 1NF, 2NF, 3NF</li>
+              <li>Diagrama ER</li>
+              <li>PostgreSQL — recursos avançados</li>
+              <li>JSONB para dados semi-estruturados</li>
+              <li>Full-text search nativo</li>
+              <li>Stored procedures e triggers</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🔺</span>
+          <span class="module-title">Prisma ORM — Banco de Dados Tipado</span>
+          <span class="module-time">~2 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Prisma</div>
+            <ul class="topic-list">
+              <li>Schema Prisma — modelos e relações</li>
+              <li>Migrations com prisma migrate</li>
+              <li>Prisma Client — CRUD tipado</li>
+              <li>Relações: include, select, nested</li>
+              <li>Transactions</li>
+              <li>Prisma Studio — GUI</li>
+              <li>Seed de banco de dados</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Projeto</div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 03 BE</div>
+              <div class="project-card-name">API SaaS Completa</div>
+              <div class="project-card-desc">
+                Multi-tenant, autenticação, PostgreSQL + Prisma, planos de assinatura,
+                webhook de pagamento, documentação OpenAPI.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 5 BE ── -->
+  <div class="phase be" id="be-5">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">05</div>
+      <div class="phase-info">
+        <div class="phase-name">Autenticação, Segurança e OWASP</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-intermediario">Intermediário</span>
+          <span class="meta-tag">⏱ 3–4 semanas</span>
+          <span class="meta-tag">Pré-req: APIs + DB</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🔐</span>
+          <span class="module-title">Segurança Profissional</span>
+          <span class="module-time">~3–4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Autenticação</div>
+            <ul class="topic-list">
+              <li>JWT — estrutura, assinatura, validação</li>
+              <li>Access Token + Refresh Token strategy</li>
+              <li>Bcrypt para hash de senhas</li>
+              <li>OAuth 2.0 — fluxos</li>
+              <li>RBAC — controle de acesso por role</li>
+              <li>Session-based vs Token-based</li>
+              <li>2FA — TOTP (Google Authenticator)</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">OWASP Top 10</div>
+            <ul class="topic-list">
+              <li>SQL Injection — como prevenir com Prisma/pg</li>
+              <li>XSS — sanitização de input</li>
+              <li>CSRF — tokens e SameSite cookies</li>
+              <li>IDOR — validação de ownership</li>
+              <li>Broken Authentication</li>
+              <li>Security Misconfiguration</li>
+              <li>Sensitive Data Exposure</li>
+              <li>Rate Limiting e brute force prevention</li>
+              <li>Input validation estrita</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 6 BE ── -->
+  <div class="phase be" id="be-6">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">06</div>
+      <div class="phase-info">
+        <div class="phase-name">Arquitetura de Software Profissional</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 4–6 semanas</span>
+          <span class="meta-tag">Pré-req: APIs + DB + Segurança</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🏛</span>
+          <span class="module-title">Padrões Arquiteturais</span>
+          <span class="module-time">~4–6 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Padrões</div>
+            <ul class="topic-list">
+              <li>MVC — Model-View-Controller</li>
+              <li>Repository Pattern</li>
+              <li>Service Layer</li>
+              <li>SOLID — S, O, L, I, D explicados</li>
+              <li>Clean Architecture — camadas</li>
+              <li>DDD — Domain-Driven Design básico</li>
+              <li>CQRS — Command Query Responsibility</li>
+              <li>Event-Driven Architecture</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Organização de Código</div>
+            <ul class="topic-list">
+              <li>Folder structure por feature</li>
+              <li>Dependency Injection</li>
+              <li>Inversão de controle (IoC)</li>
+              <li>Interface-based programming</li>
+              <li>Testes como documentação</li>
+              <li>Code review checklists</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Tempo Real</div>
+            <ul class="topic-list">
+              <li>WebSocket — protocolo e handshake</li>
+              <li>Socket.IO — rooms, namespaces, broadcast</li>
+              <li>Server-Sent Events (SSE)</li>
+              <li>Polling vs Long Polling vs WebSocket</li>
+              <li>Casos de uso: chat, notificações, colaboração</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Projeto</div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto 04 BE</div>
+              <div class="project-card-name">API com Clean Architecture</div>
+              <div class="project-card-desc">
+                Refatorar a API SaaS usando Clean Architecture.
+                Camadas: Domain, Application, Infrastructure, Presentation.
+                Injeção de dependência manual.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 7 BE ── -->
+  <div class="phase be" id="be-7">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">07</div>
+      <div class="phase-info">
+        <div class="phase-name">Testes Profissionais — Jest e E2E</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 3–4 semanas</span>
+          <span class="meta-tag">Pré-req: arquitetura</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🧪</span>
+          <span class="module-title">Testes em Todos os Níveis</span>
+          <span class="module-time">~3–4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Tipos de Teste</div>
+            <ul class="topic-list">
+              <li>Unitários — funções isoladas com Jest</li>
+              <li>Integração — rotas com Supertest</li>
+              <li>E2E — Cypress ou Playwright</li>
+              <li>Test doubles: mocks, stubs, spies</li>
+              <li>Coverage reports</li>
+              <li>TDD — ciclo red-green-refactor</li>
+              <li>BDD — Behavior Driven Development</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Boas Práticas</div>
+            <ul class="topic-list">
+              <li>Testes devem ser FIRST: Fast, Isolated, Repeatable, Self-checking, Timely</li>
+              <li>Arrange-Act-Assert (AAA pattern)</li>
+              <li>Não testar detalhes de implementação</li>
+              <li>Banco de dados de teste separado</li>
+              <li>CI rodando testes automaticamente</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 8 BE ── -->
+  <div class="phase be" id="be-8">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">08</div>
+      <div class="phase-info">
+        <div class="phase-name">DevOps — Docker, CI/CD, VPS e Cloud</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 5–6 semanas</span>
+          <span class="meta-tag">Pré-req: testes + Node.js</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🐳</span>
+          <span class="module-title">Linux, Docker e Infraestrutura</span>
+          <span class="module-time">~3 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Linux</div>
+            <ul class="topic-list">
+              <li>Comandos essenciais: ls, cd, cat, grep, ps, kill</li>
+              <li>Permissões: chmod, chown</li>
+              <li>SSH — chaves e conexão</li>
+              <li>Processos e serviços (systemd)</li>
+              <li>cron jobs</li>
+              <li>Variáveis de ambiente</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Docker</div>
+            <ul class="topic-list">
+              <li>Containers vs VMs</li>
+              <li>Dockerfile — multi-stage builds</li>
+              <li>docker-compose para dev e prod</li>
+              <li>Networks, volumes, secrets</li>
+              <li>Registry: Docker Hub, GHCR</li>
+              <li>Build e push de imagens</li>
+              <li>Health checks</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">CI/CD</div>
+            <ul class="topic-list">
+              <li>GitHub Actions — pipelines</li>
+              <li>Testes automáticos no PR</li>
+              <li>Build e push automático de imagens</li>
+              <li>Deploy automático em merge</li>
+              <li>Environment variables seguras</li>
+              <li>Rollback estratégia</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Deploy e Servidores</div>
+            <ul class="topic-list">
+              <li>VPS: DigitalOcean, Hetzner</li>
+              <li>Nginx como reverse proxy</li>
+              <li>SSL/TLS com Certbot (Let's Encrypt)</li>
+              <li>PM2 para Node.js</li>
+              <li>Railway e Render para deploy rápido</li>
+              <li>Monitoramento: UptimeRobot</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE 9 BE ── -->
+  <div class="phase be" id="be-9">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">09</div>
+      <div class="phase-info">
+        <div class="phase-name">Escalabilidade — Redis, Filas e Microsserviços</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Sênior</span>
+          <span class="meta-tag">⏱ 5–6 semanas</span>
+          <span class="meta-tag">Pré-req: DevOps + DB</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">📈</span>
+          <span class="module-title">Sistemas Escaláveis</span>
+          <span class="module-time">~5–6 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Cache</div>
+            <ul class="topic-list">
+              <li>Redis — estruturas de dados</li>
+              <li>Cache aside, write-through, write-behind</li>
+              <li>TTL e invalidação</li>
+              <li>Session storage com Redis</li>
+              <li>Redis Pub/Sub</li>
+              <li>CDN para assets estáticos</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Filas de Mensagem</div>
+            <ul class="topic-list">
+              <li>Bull/BullMQ com Redis</li>
+              <li>Padrões: producer/consumer</li>
+              <li>Job retry e dead letter queue</li>
+              <li>RabbitMQ básico</li>
+              <li>Kafka conceito e quando usar</li>
+              <li>Processamento assíncrono de tarefas</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Microsserviços</div>
+            <ul class="topic-list">
+              <li>Monolito vs microsserviços — trade-offs</li>
+              <li>API Gateway (Kong, Traefik)</li>
+              <li>Service discovery</li>
+              <li>Comunicação: REST, gRPC, mensageria</li>
+              <li>Distributed tracing</li>
+              <li>Strangler Fig Pattern — migração</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Observabilidade</div>
+            <ul class="topic-list">
+              <li>Logs estruturados (Pino, Winston)</li>
+              <li>Metrics (Prometheus + Grafana)</li>
+              <li>Tracing (Jaeger, OpenTelemetry)</li>
+              <li>Alertas e dashboards</li>
+              <li>Error tracking (Sentry)</li>
+              <li>SLO, SLA, SLI conceitos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ FULLSTACK TRACK -->
+<section id="fullstack" class="track fs">
+<div class="container">
+
+  <div class="track-header">
+    <div>
+      <div class="track-badge fs">Trilha 03</div>
+      <h2 class="track-title">Fullstack <span class="accent fs">Developer</span></h2>
+      <p class="track-desc">
+        Frontend + Backend + Mobile + Cloud + IA + DevOps + Produto · ~20–24 meses
+      </p>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-label">📋 Estrutura da trilha Fullstack</div>
+    <p>
+      A trilha Fullstack <strong>inclui tudo</strong> das trilhas Frontend e Backend.
+      As fases abaixo cobrem os tópicos <strong>exclusivos do Fullstack</strong>:
+      integração, mobile avançado, cloud, IA, IoT e produto.
+      Complete as trilhas FE e BE antes ou em paralelo.
+    </p>
+  </div>
+
+  <!-- ── FASE FS-1 ── -->
+  <div class="phase fs" id="fs-1">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">FS1</div>
+      <div class="phase-info">
+        <div class="phase-name">Integração Full-Stack — Frontend + Backend Juntos</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-intermediario">Intermediário</span>
+          <span class="meta-tag">⏱ 4–5 semanas</span>
+          <span class="meta-tag">Pré-req: React + Node.js</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🔗</span>
+          <span class="module-title">Arquitetura Full-Stack Moderna</span>
+          <span class="module-time">~4–5 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Integração</div>
+            <ul class="topic-list">
+              <li>Monorepo: Turborepo ou pnpm workspaces</li>
+              <li>Compartilhar tipos TS entre FE e BE</li>
+              <li>CORS configurado para produção</li>
+              <li>Environment variables em todos os ambientes</li>
+              <li>API client centralizado (Axios instance)</li>
+              <li>tRPC — type-safe API sem código gerado</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Deploy Completo</div>
+            <ul class="topic-list">
+              <li>Frontend: Vercel</li>
+              <li>Backend: Railway ou Render</li>
+              <li>Banco: Neon (PostgreSQL serverless)</li>
+              <li>Storage: Cloudflare R2 ou S3</li>
+              <li>Domínio customizado com SSL</li>
+              <li>Preview deploys por branch</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="project-card">
+            <div class="project-card-label">🔨 Projeto Fullstack 01</div>
+            <div class="project-card-name">Clone do Notion — App de Notas Completo</div>
+            <div class="project-card-desc">
+              Editor de rich text (BlockNote ou TipTap), autenticação, workspaces, colaboração em tempo real (Socket.IO),
+              compartilhamento de documentos, busca full-text, export para PDF. Deploy completo.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE FS-2 ── -->
+  <div class="phase fs" id="fs-2">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">FS2</div>
+      <div class="phase-info">
+        <div class="phase-name">Mobile Avançado — React Native Profissional</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 5–6 semanas</span>
+          <span class="meta-tag">Pré-req: RN básico + Backend</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">📱</span>
+          <span class="module-title">React Native — Nível Sênior</span>
+          <span class="module-time">~5–6 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Offline First</div>
+            <ul class="topic-list">
+              <li>SQLite local (expo-sqlite)</li>
+              <li>Estratégia offline: cache first, network first</li>
+              <li>Sincronização com backend</li>
+              <li>Conflict resolution</li>
+              <li>WatermelonDB para apps complexos</li>
+              <li>Background sync com tasks</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Performance Mobile</div>
+            <ul class="topic-list">
+              <li>Hermes engine — benefícios</li>
+              <li>FlatList vs FlashList (performance)</li>
+              <li>Memoização de componentes</li>
+              <li>React Native Reanimated — animações fluidas</li>
+              <li>Skia para gráficos avançados</li>
+              <li>Bundle splitting</li>
+              <li>Profiling com Flipper</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="project-card">
+            <div class="project-card-label">🔨 Projeto Mobile Avançado</div>
+            <div class="project-card-name">App de Delivery com Mapa em Tempo Real</div>
+            <div class="project-card-desc">
+              Mapa com react-native-maps, rastreamento GPS em tempo real (Socket.IO),
+              notificações push (EAS), pagamento (Stripe), offline mode, SQLite local.
+              Publicar na Play Store e App Store.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE FS-3 ── -->
+  <div class="phase fs" id="fs-3">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">FS3</div>
+      <div class="phase-info">
+        <div class="phase-name">Cloud e Infraestrutura — AWS + Docker + Kubernetes</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 6–8 semanas</span>
+          <span class="meta-tag">Pré-req: DevOps básico</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">☁️</span>
+          <span class="module-title">AWS — Os Serviços Essenciais</span>
+          <span class="module-time">~4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Compute e Redes</div>
+            <ul class="topic-list">
+              <li>EC2 — instâncias e tipos</li>
+              <li>VPC — redes privadas</li>
+              <li>Security Groups e NACLs</li>
+              <li>ELB — Load Balancer</li>
+              <li>Auto Scaling Groups</li>
+              <li>Route 53 — DNS</li>
+              <li>CloudFront — CDN</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Storage e Banco</div>
+            <ul class="topic-list">
+              <li>S3 — buckets, políticas, lifecycle</li>
+              <li>RDS — PostgreSQL gerenciado</li>
+              <li>ElastiCache — Redis gerenciado</li>
+              <li>Lambda — serverless functions</li>
+              <li>SQS / SNS — filas e notificações</li>
+              <li>Secrets Manager</li>
+              <li>IAM — roles e políticas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">⚓</span>
+          <span class="module-title">Kubernetes — Orquestração de Containers</span>
+          <span class="module-time">~3–4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Conceitos</div>
+            <ul class="topic-list">
+              <li>Pods, Deployments, Services</li>
+              <li>Namespaces e RBAC</li>
+              <li>ConfigMaps e Secrets</li>
+              <li>Ingress e LoadBalancer</li>
+              <li>PersistentVolumes</li>
+              <li>Horizontal Pod Autoscaler</li>
+              <li>Helm Charts</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Prática</div>
+            <ul class="topic-list">
+              <li>Minikube localmente</li>
+              <li>EKS na AWS</li>
+              <li>kubectl — comandos essenciais</li>
+              <li>Rolling updates e canary deploy</li>
+              <li>k9s — GUI para Kubernetes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE FS-4 ── -->
+  <div class="phase fs" id="fs-4">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">FS4</div>
+      <div class="phase-info">
+        <div class="phase-name">Inteligência Artificial — Integração Prática</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 6–8 semanas</span>
+          <span class="meta-tag">Pré-req: backend sólido</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="callout info">
+        <div class="callout-label">IA para devs em 2026</div>
+        <p>Você não precisa ser cientista de dados para integrar IA. Em 2026, developers que sabem <strong>consumir e orquestrar LLMs</strong> têm um diferencial enorme. Foco em integração prática, não em treinamento de modelos.</p>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🧠</span>
+          <span class="module-title">Conceitos Fundamentais de IA</span>
+          <span class="module-time">~2 semanas</span>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="ai-grid">
+            <div class="ai-card">
+              <div class="ai-card-icon">📊</div>
+              <div class="ai-card-title">Machine Learning</div>
+              <div class="ai-card-desc">Algoritmos que aprendem padrões a partir de dados. Supervisionado, não-supervisionado, por reforço.</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">🔮</div>
+              <div class="ai-card-title">Deep Learning</div>
+              <div class="ai-card-desc">Redes neurais profundas. Base para modelos modernos de linguagem e visão computacional.</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">💬</div>
+              <div class="ai-card-title">LLMs</div>
+              <div class="ai-card-desc">Large Language Models. GPT-4, Claude, Gemini, Llama. Modelos treinados em texto para geração de linguagem.</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">🔢</div>
+              <div class="ai-card-title">Tokens e Embeddings</div>
+              <div class="ai-card-desc">Tokens são unidades de texto. Embeddings são representações vetoriais de semântica — base do RAG.</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">🔍</div>
+              <div class="ai-card-title">RAG</div>
+              <div class="ai-card-desc">Retrieval-Augmented Generation. Busca documentos relevantes e injeta no contexto do LLM. Potente para chatbots empresariais.</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">🤖</div>
+              <div class="ai-card-title">Agentes de IA</div>
+              <div class="ai-card-desc">LLMs que planejam e executam ações: buscar na web, chamar APIs, escrever e rodar código.</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">🖼</div>
+              <div class="ai-card-title">IA Multimodal</div>
+              <div class="ai-card-desc">Modelos que processam texto, imagem, áudio e vídeo simultaneamente. GPT-4o, Gemini 2.0.</div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">📐</div>
+              <div class="ai-card-title">Prompt Engineering</div>
+              <div class="ai-card-desc">Arte de estruturar prompts. System prompts, few-shot, chain-of-thought, structured outputs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🔧</span>
+          <span class="module-title">Ferramentas e Integrações Práticas</span>
+          <span class="module-time">~4–6 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">APIs e SDKs</div>
+            <ul class="topic-list">
+              <li>OpenAI API — chat, completions, embeddings, vision</li>
+              <li>Anthropic API (Claude) — streaming, tools</li>
+              <li>Gemini API — multimodal</li>
+              <li>Streaming de respostas para o frontend</li>
+              <li>Function Calling / Tool Use</li>
+              <li>Structured Outputs com JSON Schema</li>
+              <li>Fine-tuning básico</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">RAG e Vector DB</div>
+            <ul class="topic-list">
+              <li>pgvector no PostgreSQL</li>
+              <li>Pinecone ou Chroma como vector store</li>
+              <li>Chunking estratégico de documentos</li>
+              <li>Embeddings com text-embedding-3</li>
+              <li>Hybrid search: vetorial + full-text</li>
+              <li>Reranking para qualidade</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">LangChain e Agentes</div>
+            <ul class="topic-list">
+              <li>LangChain.js — chains e memory</li>
+              <li>LangGraph — agentes com estado</li>
+              <li>Tools: web search, calculator, code</li>
+              <li>Multi-agent systems</li>
+              <li>Mastra.ai — agentes em TypeScript</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Local e Open Source</div>
+            <ul class="topic-list">
+              <li>Ollama — LLMs locais</li>
+              <li>LM Studio — GUI local</li>
+              <li>Llama 3, Mistral, Qwen localmente</li>
+              <li>Hugging Face — modelos e spaces</li>
+              <li>TensorFlow.js — ML no browser</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto IA 01</div>
+              <div class="project-card-name">Chatbot RAG para Documentos</div>
+              <div class="project-card-desc">
+                Upload de PDFs → chunking → embeddings → vector store → chat com contexto.
+                Interface em Next.js com streaming de respostas.
+              </div>
+            </div>
+            <div class="project-card">
+              <div class="project-card-label">🔨 Projeto IA 02</div>
+              <div class="project-card-name">Agente de Pesquisa Autônomo</div>
+              <div class="project-card-desc">
+                Agente que pesquisa na web, lê artigos, sintetiza informações e gera relatórios.
+                LangGraph + Tavily Search + Claude.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE FS-5 ── -->
+  <div class="phase fs" id="fs-5">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">FS5</div>
+      <div class="phase-info">
+        <div class="phase-name">IoT — ESP32, MQTT e Automação</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Avançado</span>
+          <span class="meta-tag">⏱ 3–4 semanas</span>
+          <span class="meta-tag">Pré-req: backend + tempo real</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">📡</span>
+          <span class="module-title">Internet das Coisas com Node.js</span>
+          <span class="module-time">~3–4 semanas</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Hardware</div>
+            <ul class="topic-list">
+              <li>ESP32 — programação com Arduino IDE</li>
+              <li>Sensores: temperatura (DHT22), umidade, movimento (PIR)</li>
+              <li>Atuadores: relés, servos, LEDs</li>
+              <li>WiFi e Bluetooth no ESP32</li>
+              <li>Deep Sleep para economia de energia</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Protocolo MQTT</div>
+            <ul class="topic-list">
+              <li>Arquitetura publish/subscribe</li>
+              <li>Broker: HiveMQ ou Mosquitto</li>
+              <li>MQTT.js no Node.js</li>
+              <li>Topics, QoS levels</li>
+              <li>ESP32 → MQTT → Node.js → Socket.IO → Frontend</li>
+              <li>Automação baseada em regras</li>
+              <li>Dashboard de monitoramento em tempo real</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body full" style="display:block; padding:20px;">
+          <div class="project-card">
+            <div class="project-card-label">🔨 Projeto IoT</div>
+            <div class="project-card-name">Sistema de Monitoramento Ambiental</div>
+            <div class="project-card-desc">
+              ESP32 coleta temperatura e umidade → publica via MQTT → Node.js recebe e armazena no PostgreSQL →
+              Dashboard Next.js em tempo real com alertas → App mobile com notificações push.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FASE FS-6 ── -->
+  <div class="phase fs" id="fs-6">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num">FS6</div>
+      <div class="phase-info">
+        <div class="phase-name">Produto e Startup — Do Código ao Negócio</div>
+        <div class="phase-meta">
+          <span class="meta-tag lvl-avancado">Produto</span>
+          <span class="meta-tag">⏱ contínuo</span>
+          <span class="meta-tag">Pré-req: Fullstack completo</span>
+        </div>
+      </div>
+      <div class="phase-toggle">+</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="module">
+        <div class="module-head">
+          <span class="module-icon">🚀</span>
+          <span class="module-title">Da Ideia ao Produto Real</span>
+          <span class="module-time">contínuo</span>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Produto</div>
+            <ul class="topic-list">
+              <li>MVP — Minimum Viable Product real</li>
+              <li>Product Market Fit — métricas</li>
+              <li>Jobs To Be Done framework</li>
+              <li>User Research — entrevistas</li>
+              <li>Priorização: RICE, MoSCoW</li>
+              <li>Roadmap de produto</li>
+              <li>Métricas: DAU, MAU, Churn, LTV, CAC</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Negócio</div>
+            <ul class="topic-list">
+              <li>Modelos de monetização: SaaS, marketplace, freemium</li>
+              <li>Stripe — assinaturas e pagamentos</li>
+              <li>Growth hacking básico</li>
+              <li>Landing pages que convertem</li>
+              <li>SEO para produto SaaS</li>
+              <li>Pitch deck estrutura</li>
+              <li>Captação: aceleradoras, investidores-anjo</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-body">
+          <div class="mod-section">
+            <div class="mod-section-label">Equipe e Processo</div>
+            <ul class="topic-list">
+              <li>Scrum vs Kanban — quando usar</li>
+              <li>Definition of Done e Ready</li>
+              <li>Sprint planning e retrospectiva</li>
+              <li>GitHub Projects + Issues</li>
+              <li>Documentação técnica</li>
+              <li>Onboarding de novos devs</li>
+            </ul>
+          </div>
+          <div class="mod-section">
+            <div class="mod-section-label">Projeto Final</div>
+            <div class="project-card">
+              <div class="project-card-label">🏆 Projeto Startup</div>
+              <div class="project-card-name">Seu SaaS em Produção</div>
+              <div class="project-card-desc">
+                Valide uma ideia real com usuários reais.
+                Construa o MVP em 4–6 semanas. Cobre pagamento.
+                Tem métricas. Cresce organicamente.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ FERRAMENTAS -->
+<section id="ferramentas" class="track">
+<div class="container">
+
+  <div class="track-header">
+    <div>
+      <h2 class="track-title">Ferramentas <span style="color:var(--yellow)">do Dev Profissional</span></h2>
+      <p class="track-desc">Setup completo de ambiente de desenvolvimento em 2026</p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+
+    <div class="module">
+      <div class="module-head">
+        <span class="module-icon">💻</span>
+        <span class="module-title">IDE e Editor</span>
+      </div>
+      <div style="padding: 16px;">
+        <ul class="topic-list">
+          <li><strong>VS Code</strong> — principal editor</li>
+          <li>Neovim / Zed — alternativas</li>
+          <li>GitHub Copilot — autocomplete IA</li>
+          <li>Cursor — editor com IA nativa</li>
+        </ul>
+        <div class="mod-section-label" style="margin-top:14px;">Extensões VS Code</div>
+        <div class="tools-grid">
+          <span class="tool-chip">ESLint</span>
+          <span class="tool-chip">Prettier</span>
+          <span class="tool-chip">GitLens</span>
+          <span class="tool-chip">Thunder Client</span>
+          <span class="tool-chip">Error Lens</span>
+          <span class="tool-chip">Auto Rename Tag</span>
+          <span class="tool-chip">Path Intellisense</span>
+          <span class="tool-chip">Tailwind IntelliSense</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <span class="module-icon">🧰</span>
+        <span class="module-title">Terminal e CLI</span>
+      </div>
+      <div style="padding: 16px;">
+        <ul class="topic-list">
+          <li>Zsh + Oh My Zsh + Starship prompt</li>
+          <li>tmux ou Zellij para multiplexer</li>
+          <li>fzf — fuzzy finder</li>
+          <li>eza, bat, fd — modernos substitutos</li>
+          <li>lazygit — TUI para Git</li>
+        </ul>
+        <div class="mod-section-label" style="margin-top:14px;">CLI Dev Tools</div>
+        <div class="tools-grid">
+          <span class="tool-chip">pnpm</span>
+          <span class="tool-chip">bun</span>
+          <span class="tool-chip">tsx</span>
+          <span class="tool-chip">http-server</span>
+          <span class="tool-chip">ngrok</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <span class="module-icon">🌐</span>
+        <span class="module-title">APIs e Testes HTTP</span>
+      </div>
+      <div style="padding: 16px;">
+        <ul class="topic-list">
+          <li>Insomnia — client REST/GraphQL</li>
+          <li>Bruno — open source local-first</li>
+          <li>Postman — mais popular</li>
+          <li>curl — linha de comando</li>
+          <li>HTTPie — curl moderno</li>
+        </ul>
+        <div class="mod-section-label" style="margin-top:14px;">Documentação</div>
+        <div class="tools-grid">
+          <span class="tool-chip">Swagger UI</span>
+          <span class="tool-chip">Scalar</span>
+          <span class="tool-chip">Redocly</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <span class="module-icon">🗄</span>
+        <span class="module-title">Banco de Dados — GUI</span>
+      </div>
+      <div style="padding: 16px;">
+        <ul class="topic-list">
+          <li>TablePlus — GUI universal</li>
+          <li>Prisma Studio — para projetos Prisma</li>
+          <li>pgAdmin — PostgreSQL específico</li>
+          <li>RedisInsight — para Redis</li>
+          <li>DBeaver — open source</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <span class="module-icon">🎨</span>
+        <span class="module-title">Design e Prototipação</span>
+      </div>
+      <div style="padding: 16px;">
+        <ul class="topic-list">
+          <li>Figma — design, prototipação, handoff</li>
+          <li>v0.dev — UI com IA</li>
+          <li>Excalidraw — diagramas rápidos</li>
+          <li>Whimsical — fluxogramas</li>
+          <li>Lottie — animações vetoriais</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <span class="module-icon">📚</span>
+        <span class="module-title">Plataformas de Estudo</span>
+      </div>
+      <div style="padding: 16px;">
+        <ul class="topic-list">
+          <li>MDN Web Docs — referência oficial web</li>
+          <li>docs.react.dev — React oficial</li>
+          <li>nextjs.org/docs — Next.js oficial</li>
+          <li>roadmap.sh — mapas de carreira</li>
+          <li>freeCodeCamp — gratuito</li>
+          <li>The Odin Project — gratuito</li>
+          <li>Rocketseat / DevClub — pt-BR</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ CARREIRA -->
+<section id="carreira" class="track">
+<div class="container">
+
+  <div class="track-header">
+    <div>
+      <h2 class="track-title">Evolução <span style="color:var(--green)">de Carreira</span></h2>
+      <p class="track-desc">Do primeiro commit ao primeiro emprego e além</p>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-label">💡 Portfólio que contrata</div>
+    <p>
+      <strong>3 projetos bons > 20 projetos mediocres.</strong>
+      Cada projeto do portfólio deve ter: README profissional, deploy funcionando, código limpo,
+      descrição do problema que resolve, tecnologias usadas e suas escolhas arquiteturais.
+    </p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+    <div class="module">
+      <div class="module-head"><span class="module-icon">📁</span><span class="module-title">Portfólio por Nível</span></div>
+      <div style="padding:16px;">
+        <div class="mod-section-label">Júnior (primeiros 6–12 meses)</div>
+        <ul class="topic-list">
+          <li>Portfólio web com Next.js + deploy</li>
+          <li>3 projetos com README completo</li>
+          <li>Contribuição em repo open source</li>
+          <li>GitHub ativo (commits frequentes)</li>
+        </ul>
+        <div class="mod-section-label" style="margin-top:14px;">Pleno (1–3 anos)</div>
+        <ul class="topic-list">
+          <li>SaaS em produção com usuários</li>
+          <li>API com documentação OpenAPI</li>
+          <li>App mobile publicado</li>
+          <li>Blog técnico ou posts no LinkedIn</li>
+        </ul>
+        <div class="mod-section-label" style="margin-top:14px;">Sênior (3+ anos)</div>
+        <ul class="topic-list">
+          <li>Projetos em escala real</li>
+          <li>Open source relevante</li>
+          <li>Mentoria ou artigos técnicos</li>
+          <li>Palestras em meetups/eventos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head"><span class="module-icon">💼</span><span class="module-title">Como Conseguir o Primeiro Emprego</span></div>
+      <div style="padding:16px;">
+        <ul class="topic-list">
+          <li>LinkedIn otimizado com projetos</li>
+          <li>GitHub com README profile</li>
+          <li>Currículo de 1 página, focado em resultados</li>
+          <li>Networking ativo em comunidades Discord</li>
+          <li>Participar de hackathons</li>
+          <li>Freela para ganhar experiência</li>
+          <li>Trabalho voluntário em ONGs tech</li>
+          <li>Candidatura ativa: 5–10 vagas por dia</li>
+        </ul>
+        <div class="mod-section-label" style="margin-top:14px;">Onde procurar vagas</div>
+        <div class="tools-grid">
+          <span class="tool-chip">LinkedIn Jobs</span>
+          <span class="tool-chip">Gupy</span>
+          <span class="tool-chip">Indeed</span>
+          <span class="tool-chip">Remote OK</span>
+          <span class="tool-chip">WeLoveProduct</span>
+          <span class="tool-chip">InfoJobs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-label">🧭 Princípio final</div>
+    <p>
+      <strong>Aprenda em público.</strong> Documente sua jornada no LinkedIn, Twitter/X ou blog.
+      Mostre o que você está aprendendo, os erros que cometeu, como resolveu.
+      Isso constrói reputação antes do emprego, atrai oportunidades e reforça o aprendizado.
+      <br><br>
+      A carreira de dev não é uma linha reta — é uma espiral de aprendizado constante.
+      O roadmap é o mapa; você faz a caminhada.
+    </p>
+  </div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-section-title">Documentação Oficial</div>
+      <ul class="footer-link-list">
+        <li><span>→</span> developer.mozilla.org</li>
+        <li><span>→</span> react.dev</li>
+        <li><span>→</span> nextjs.org/docs</li>
+        <li><span>→</span> nodejs.org/docs</li>
+        <li><span>→</span> typescriptlang.org/docs</li>
+        <li><span>→</span> docs.expo.dev</li>
+        <li><span>→</span> prisma.io/docs</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-section-title">Comunidades</div>
+      <ul class="footer-link-list">
+        <li><span>→</span> Rocketseat Discord</li>
+        <li><span>→</span> DevClub Comunidade</li>
+        <li><span>→</span> FrontendBR GitHub</li>
+        <li><span>→</span> Stack Overflow</li>
+        <li><span>→</span> Reddit r/reactjs</li>
+        <li><span>→</span> Reddit r/node</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-section-title">Referências</div>
+      <ul class="footer-link-list">
+        <li><span>→</span> roadmap.sh/frontend</li>
+        <li><span>→</span> roadmap.sh/backend</li>
+        <li><span>→</span> javascript.info</li>
+        <li><span>→</span> owasp.org</li>
+        <li><span>→</span> 12factor.net</li>
+        <li><span>→</span> patterns.dev</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-section-title">Stacks Cobertas</div>
+      <div class="tools-grid" style="margin-top:8px;">
+        <span class="tool-chip">HTML</span>
+        <span class="tool-chip">CSS</span>
+        <span class="tool-chip">JavaScript</span>
+        <span class="tool-chip">TypeScript</span>
+        <span class="tool-chip">React</span>
+        <span class="tool-chip">Next.js</span>
+        <span class="tool-chip">Node.js</span>
+        <span class="tool-chip">Express</span>
+        <span class="tool-chip">Fastify</span>
+        <span class="tool-chip">PostgreSQL</span>
+        <span class="tool-chip">Prisma</span>
+        <span class="tool-chip">Redis</span>
+        <span class="tool-chip">Docker</span>
+        <span class="tool-chip">AWS</span>
+        <span class="tool-chip">React Native</span>
+        <span class="tool-chip">Expo</span>
+        <span class="tool-chip">Socket.IO</span>
+        <span class="tool-chip">Jest</span>
+        <span class="tool-chip">OpenAI</span>
+        <span class="tool-chip">LangChain</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copy">
+    Roadmap Dev 2026 · Frontend · Backend · Fullstack · Gerado com ♥ e muito TypeScript
+  </div>
+</footer>
+
+<script>
+  function togglePhase(header) {
+    const phase = header.closest('.phase');
+    phase.classList.toggle('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.module, .callout').forEach(el => {
+    el.classList.add('reveal');
+    observer.observe(el);
+  });
+
+  // Active nav
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-item[href]');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navItems.forEach(n => {
+      n.classList.remove('active');
+      if (n.getAttribute('href') === '#' + current) n.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
